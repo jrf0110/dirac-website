@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Dirac.js</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dirac.js - Postgres ORM Thing" />
+
+    <link rel="stylesheet" href="/css/core.gen.css">
+    <link rel="stylesheet" href="bower_components/prismjs/prism.css">
+    <link rel="stylesheet" href="bower_components/prismjs/prism-twilight.css">
+
+    <script src="bower_components/requirejs/require.js"></script>
+    <script src="js/require.config.js"></script>
+    <script>
+      require( ['js/home'], function( app ){
+        app.init();
+      });
+    </script>
+  </head>
+  <body class="page-home">
+    <!--<Navbar>-->
+    <header class="navbar collapsed">
+      <div class="container">
+        <a href="/">
+          <span class="navbar-logo">Dirac.js</span>
+        </a>
+
+        <ul class="nav">
+          <li><a href="#documentation">Documentation</a></li>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="#middleware">Middleware</a></li>
+          <li><a href="http://github.com/jrf0110/dirac">Github</a></li>
+        </ul>
+      </div>
+    </header>
+    <!--</Navbar>-->
+
+    <div class="hero-unit">
+      <h1>Postgres ORM Thing</h1>
+      <p>For your node-pg interfacin'</p>
+      <a href="#documentation" class="btn btn-large btn-tertiary btn-call-to-action">Skip to Documentation</a>
+    </div>
+
+    <section class="page-section" id="intro-section">
+      <div class="container">
+        <div id="intro-text">
+          <h2 style="section-header">Easier Node Postgres</h2>
+          <p>Paul Dirac was a theoretical physicist who made fundamental contributions to the early development of both quantum mechanics and quantum electrodynamics. Dirac.js is a flexible and extendable database layer for Node Postgres.</p>
+        </div>
+        <div id="intro-code">
+          <div class="window-pane">
+            <div class="window-header">
+              <i class="window-btn"></i>
+              <i class="window-btn"></i>
+              <i class="window-btn"></i>
+
+              <div class="window-nav">
+                <button class="btn btn-blank btn-prev">
+                  <i class="fa fa-arrow-circle-o-left"></i>
+                </button>
+
+                <button class="btn btn-blank btn-next">
+                  <i class="fa fa-arrow-circle-o-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="window-content">
+<code class="language-javascript">var dirac = require('dirac');
+
+// Register a table with dirac
+dirac.register({
+  name: 'users'
+, schema: {
+    id:         { type: 'serial', primaryKey: true }
+  , email:      { type: 'text', unique: true }
+  , createdAt:  { type: 'timestamp', default: 'now()' }
+  }
+});
+
+// Connect to Postgres
+dirac.init({ database: 'my_app' });
+
+// Perform non-destructive database sync
+dirac.sync();
+
+dirac.dals.users.findOne( 7, function( error, user ){
+  /* ... */
+});</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section section-darker" id="marketing-points-section">
+      <div class="container">
+        <div class="marketing-points">
+          <a href="#" class="point">
+            <i class="point-icon fa fa-refresh"></i>
+            <h3 class="point-title">Non-destructive database syncing</h3>
+          </a>
+          <a href="#" class="point">
+            <i class="point-icon fa fa-power-off"></i>
+            <h3 class="point-title">Destructive database syncing</h3>
+          </a>
+          <a href="#" class="point">
+            <i class="point-icon fa fa-anchor"></i>
+            <h3 class="point-title">Standard CRUD</h3>
+          </a>
+          <a href="#" class="point">
+            <i class="point-icon fa fa-fighter-jet"></i>
+            <h3 class="point-title">Robust JSON queries</h3>
+          </a>
+          <a href="#" class="point">
+            <i class="point-icon fa fa-plus"></i>
+            <h3 class="point-title">Pluginable Architecture</h3>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="documentation">
+      <div class="container">
+        <h2 class="section-title">Documentation</h2>
+
+        <div class="docs-nav-col">
+          <ul class="nav nav-vertical">
+            <li><a href="#">Getting Started</a></li>
+            <li>
+              <a href="#">Root API</a>
+              <ul class="nav nav-vertical">
+                <li><a href="#">dirac.init</a></li>
+                <li><a href="#">dirac.dropAllTables</a></li>
+                <li><a href="#">dirac.register</a></li>
+                <li><a href="#">dirac.sync</a></li>
+                <li><a href="#">dirac.use</a></li>
+                <li><a href="#">dirac.createTable</a></li>
+                <li><a href="#">dirac.saveCurrentDbState</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">DAL</a>
+              <ul class="nav nav-vertical">
+                <li><a href="#">dirac.dals.table_name.find</a></li>
+                <li><a href="#">dirac.dals.table_name.findOne</a></li>
+                <li><a href="#">dirac.dals.table_name.remove</a></li>
+                <li><a href="#">dirac.dals.table_name.update</a></li>
+                <li><a href="#">dirac.dals.table_name.insert</a></li>
+                <li><a href="#">dirac.dals.table_name.before</a></li>
+                <li><a href="#">dirac.dals.table_name.after</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="docs-content-col">
+          <section class="docs-section">
+            <h3 class="section-title">Getting Started</h3>
+            <p>Dirac.js strives to provide a static interface to your postgres database inspired by MongoDB. You could easily build Data Class and utilize the built-in schema management and database syncing.</p>
+            <h4>File Structure</h4>
+<pre>
+  - lib/
+  - db/
+    - tables/
+        - groups.js
+        - users.js
+        - users_groups.js
+    - index.js
+</pre>
+            <h4>Your Main Database Module</h4>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">db/index.js</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">var fs      = require('fs');
+var path    = require('path');
+var dirac   = require('dirac');
+var config  = require('../config');
+
+// Specify the `tables` directory
+var dir = path.join( __dirname, 'tables' );
+
+// Register each table file with dirac
+fs.readdirSync( dir ).filter( function( file ){
+  return fs.statSync( path.join( dir, file ) ).isFile();
+}).map( function( t ){
+  return require( path.join( dir, t ) );
+}).forEach( dirac.register );
+
+// Set the DB Config
+dirac.init( config.db );
+
+// Get the database up-to-speed with table files registered
+dirac.sync();
+
+// Export the dals namespace for easy access
+module.exports = dirac.dals;
+</code>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <div class="filler"></div>
+
+    <!--<Footer>-->
+    <footer class="footer">
+      <div class="container">
+        <span class="footer-logo">Dirac.js</span>
+        
+        <ul class="nav">
+          <li><a href="#documentation">Documentation</a></li>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="#middleware">Middleware</a></li>
+          <li><a href="http://github.com/jrf0110/dirac">Github</a></li>
+        </ul>
+        <div class="copyright">Dirac.js is awesome and you should use it</div>
+      </div>
+    </footer>
+    <!--</Footer>-->
+  </body>
+</html>

@@ -1,0 +1,65 @@
+///////////////////////////////
+// Component->Site Overrides //
+///////////////////////////////
+
+.filler {
+  height: 1000px;
+}
+
+.page-home {
+  #intro-section {
+    #grid > .row();
+
+    text-align: left;
+
+    #intro-text {
+      #grid > .column(40%);
+      padding-right: @gutter-width;
+    }
+
+    #intro-code {
+      #grid > .column(60%);
+      padding-left: @gutter-width;
+      padding-bottom: 22px;
+
+      .window-pane {
+        box-shadow:
+          -24px 24px 16px @body-bg-color,
+          24px 24px 16px @body-bg-color,
+          0 34px 16px rgba(0, 0, 0, 0.27);
+      }
+    }
+  }
+
+  #marketing-points-section {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .docs-nav-col {
+    #grid > .column(20%);
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .docs-content-col {
+    #grid > .column(80%);
+    padding-left: @gutter-width;
+    border-left: solid 1px #AAA;
+    box-shadow: -8px 0 8px rgba(0, 0, 0, 0.07);
+  }
+
+  #documentation {
+    text-align: left;
+  }
+}
+
+.window-pane code {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+// Weird code theme operator background
+.token.operator {
+  background: none !important;
+}
