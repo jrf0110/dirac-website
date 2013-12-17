@@ -45,8 +45,10 @@
   .docs-content-col {
     #grid > .column(80%);
     padding-left: @gutter-width;
-    border-left: solid 1px #AAA;
-    box-shadow: -8px 0 8px rgba(0, 0, 0, 0.07);
+    border-left: solid 1px lighten( @off-gray, 30% );
+    box-shadow:
+      -8px 0 8px rgba(0, 0, 0, 0.07),
+      inset 1px 0 rgba(255, 255, 255, 0.87);
   }
 
   #documentation {

@@ -14,11 +14,15 @@ define(function(require){
 
   // plugins
   require('components/navbar');
+  require('components/sticky');
 
   var app = {
     init: function(){
       utils.domready( function(){
         utils.dom('.navbar').navbar();
+        utils.dom('#docs-nav').sticky({
+          stopAt: '#documentation'
+        });
       });
     }
   };

@@ -46,7 +46,9 @@
       <div class="container">
         <div id="intro-text">
           <h2 style="section-header">Easier Node Postgres</h2>
-          <p>Paul Dirac was a theoretical physicist who made fundamental contributions to the early development of both quantum mechanics and quantum electrodynamics. Dirac.js is a flexible and extendable database layer for Node Postgres.</p>
+          <p>Paul Dirac was a theoretical physicist who made fundamental contributions to the early development of both quantum mechanics and quantum electrodynamics.
+          </p>
+          <p><em>Dirac.js</em> is an extendable and configurable database layer build on top of <a href="http://github.com/goodybag/mongo-sql">MoSQL</a> and made for Node Postgres. It has a pluginable architecture and ships with sensible middleware so you can avoid repetitive tasks.</p>
         </div>
         <div id="intro-code">
           <div class="window-pane">
@@ -78,7 +80,7 @@ dirac.register({
   }
 });
 
-// Connect to Postgres
+// Connect to database
 dirac.init({ database: 'my_app' });
 
 // Perform non-destructive database sync
@@ -98,18 +100,18 @@ dirac.dals.users.findOne( 7, function( error, user ){
         <div class="marketing-points">
           <a href="#" class="point">
             <i class="point-icon fa fa-refresh"></i>
-            <h3 class="point-title">Non-destructive database syncing</h3>
+            <h3 class="point-title">Destructive or non-destructive database syncing</h3>
           </a>
           <a href="#" class="point">
-            <i class="point-icon fa fa-power-off"></i>
-            <h3 class="point-title">Destructive database syncing</h3>
+            <i class="point-icon fa fa-table"></i>
+            <h3 class="point-title">JSON table and view definitions</h3>
           </a>
           <a href="#" class="point">
             <i class="point-icon fa fa-anchor"></i>
             <h3 class="point-title">Standard CRUD</h3>
           </a>
           <a href="#" class="point">
-            <i class="point-icon fa fa-fighter-jet"></i>
+            <i class="point-icon fa fa-code"></i>
             <h3 class="point-title">Robust JSON queries</h3>
           </a>
           <a href="#" class="point">
@@ -125,12 +127,14 @@ dirac.dals.users.findOne( 7, function( error, user ){
         <h2 class="section-title">Documentation</h2>
 
         <div class="docs-nav-col">
-          <ul class="nav nav-vertical">
-            <li><a href="#">Getting Started</a></li>
+          <ul class="nav nav-vertical" id="docs-nav">
+            <li><a href="#docs-getting-started">Getting Started</a></li>
             <li>
-              <a href="#">Root API</a>
+              <a href="#docs-root-api">Root API</a>
               <ul class="nav nav-vertical">
                 <li><a href="#">dirac.init</a></li>
+                <li><a href="#">dirac.query</a></li>
+                <li><a href="#">dirac.raw</a></li>
                 <li><a href="#">dirac.dropAllTables</a></li>
                 <li><a href="#">dirac.register</a></li>
                 <li><a href="#">dirac.sync</a></li>
@@ -140,7 +144,7 @@ dirac.dals.users.findOne( 7, function( error, user ){
               </ul>
             </li>
             <li>
-              <a href="#">DAL</a>
+              <a href="#docs-dal">DAL</a>
               <ul class="nav nav-vertical">
                 <li><a href="#">dirac.dals.table_name.find</a></li>
                 <li><a href="#">dirac.dals.table_name.findOne</a></li>
@@ -151,13 +155,22 @@ dirac.dals.users.findOne( 7, function( error, user ){
                 <li><a href="#">dirac.dals.table_name.after</a></li>
               </ul>
             </li>
+            <li>
+              <a href="#docs-database-syncing">Database Syncing</a>
+              <ul class="nav nav-vertical">
+                <li><a href="#">Alter Table Strategies</a></li>
+                <li><a href="#">dirac.strategies.has</a></li>
+                <li><a href="#">dirac.strategies.get</a></li>
+                <li><a href="#">dirac.strategies.register</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
 
         <div class="docs-content-col">
-          <section class="docs-section">
+          <section class="docs-section" id="docs-getting-started">
             <h3 class="section-title">Getting Started</h3>
-            <p>Dirac.js strives to provide a static interface to your postgres database inspired by MongoDB. You could easily build Data Class and utilize the built-in schema management and database syncing.</p>
+            <p>Dirac.js is meant to be a solid starting point for your main database module. While you could have all of your logic in a single file, I like to group code by table as seen in the file structure below:</p>
             <h4>File Structure</h4>
 <pre>
   - lib/
@@ -167,6 +180,7 @@ dirac.dals.users.findOne( 7, function( error, user ){
         - users.js
         - users_groups.js
     - index.js
+  - app.js
 </pre>
             <h4>Your Main Database Module</h4>
             <div class="window-pane">
@@ -195,16 +209,154 @@ fs.readdirSync( dir ).filter( function( file ){
 // Set the DB Config
 dirac.init( config.db );
 
-// Get the database up-to-speed with table files registered
-dirac.sync();
-
 // Export the dals namespace for easy access
 module.exports = dirac.dals;
 </code>
               </div>
             </div>
+
+            <p>The `dirac.dals` namespace is where each table interface is. So in the example above, groups, users, and users_groups would be available under `dirac.dals`.</p>
+
+            <h4>Using the Database Module</h4>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">app.js</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">var db = require('./db');
+
+// Get the Database up-to-date with current schema
+db.sync();
+
+// Query where clause
+// See https://github.com/goodybag/mongo-sql/blob/master/docs/conditional-helpers.md
+// For all where clause options
+var $where = {
+  created_at: { $gt: new Date('2012-01-01') }
+};
+
+// Other query options
+// See https://github.com/goodybag/mongo-sql/blob/master/docs/query-types.md#type-select
+// for full options
+var options = {
+  order: { id: 'desc' }
+, limit: 10
+};
+
+// Find all users created after specified date
+// order by id desc and limit 10
+db.users.find( $where, options, function( error, users ){
+  if ( error ) process.exit(1);
+
+  console.log( "Users:", users );
+  process.exit(0);
+});
+</code>
+              </div>
+            </div>
+          </section>
+
+          <section class="docs-section" id="docs-root-api">
+            <h3 class="section-title">Root API</h3>
+            <p>The dirac is split up into two main API's: The root API and the DAL (Data Access Layer) API. The root API involves any non-table-specific functionality while the DAL API is table-specific.</p>
+
+            <h4 class="docs-method" id="docs-root-init">dirac.init( options )</h4>
+            <p class="docs-method-description">Connect to Postgres</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>@param {Object} Options</li>
+              <ul>
+                <li>@property `connStr`</li>
+                <li>@property `port` default: 5432</li>
+                <li>@property `host` default: 'localhost'</li>
+                <li>@property `database`</li>
+              </ul>
+            </ul>
+
+            <h4 class="docs-method" id="docs-root-init">dirac.query( queryObject, callback )</h4>
+            <p class="docs-method-description">Execute a <a href="http://github.com/goodybag/mongo-sql">MoSQL</a> query</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>
+                @param {Object} queryObject
+                <br />
+                See the <a href="https://github.com/goodybag/mongo-sql/tree/master/docs">MoSQL query documentation</a>
+              </li>
+              <li>@param {Function} callback( error, results )</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.query</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">var dirac = require('/dirac');
+
+var $query = {
+  type: 'select'
+, table: 'users'
+, columns: [ 'id', 'name' ]
+, where: {
+    id: {
+      $in: [ 1, 2, 3, 4 ]
+    }
+  }
+};
+
+dirac.query( $query, function( error, users ){
+  /* ... */
+});
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-root-init">dirac.raw( sql, values, callback )</h4>
+            <p class="docs-method-description">Execute a SQL query</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>@param {String} sql - SQL string</li>
+              <li>@param {Array}  values - SQL values</li>
+              <li>@param {Function} callback( error, results )</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.raw</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">var dirac = require('/dirac');
+
+var sql = 'select * from users where id = $1';
+var values = [ 50 ];
+
+dirac.raw( sql, values, function( error, users ){
+  /* ... */
+});
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-root-init">dirac.dropAllTables( callback )</h4>
+            <p class="docs-method-description">Run the command for dropping all registered tables.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>@param {Function} callback( error, results )</li>
+            </ul>
           </section>
         </div>
+      </div>
+    </section>
+
+    <section class="page-section section-primary">
+      <div class="container">
+        <h2 class="section-header">Another Section</h2>
       </div>
     </section>
 
