@@ -48,7 +48,7 @@
           <h2 style="section-header">Easier Node Postgres</h2>
           <p>Paul Dirac was a theoretical physicist who made fundamental contributions to the early development of both quantum mechanics and quantum electrodynamics.
           </p>
-          <p><em>Dirac.js</em> is an extendable and configurable database layer build on top of <a href="http://github.com/goodybag/mongo-sql">MoSQL</a> and made for Node Postgres. It has a pluginable architecture and ships with sensible middleware so you can avoid repetitive tasks.</p>
+          <p><em>Dirac.js</em> is an extendable and configurable database layer built on top of <a href="http://github.com/goodybag/mongo-sql">MoSQL</a> and made for Node Postgres. It has a pluginable architecture and ships with sensible middleware so you can avoid repetitive tasks.</p>
         </div>
         <div id="intro-code">
           <div class="window-pane">
@@ -135,8 +135,8 @@ dirac.dals.users.findOne( 7, function( error, user ){
                 <li><a href="#">dirac.init</a></li>
                 <li><a href="#">dirac.query</a></li>
                 <li><a href="#">dirac.raw</a></li>
-                <li><a href="#">dirac.dropAllTables</a></li>
                 <li><a href="#">dirac.register</a></li>
+                <li><a href="#">dirac.dropAllTables</a></li>
                 <li><a href="#">dirac.sync</a></li>
                 <li><a href="#">dirac.use</a></li>
                 <li><a href="#">dirac.createTable</a></li>
@@ -343,11 +343,200 @@ dirac.raw( sql, values, function( error, users ){
               </div>
             </div>
 
+            <h4 class="docs-method" id="docs-root-init">dirac.register( callback )</h4>
+            <p class="docs-method-description">Registers a new table or view with dirac. Will not actually create the table until dirac.sync() is called. Alternatively, you could call: dirac.dals.table_name.createIfNotExists() to manually add it. However, sync will resolve table dependencies and it will also save the database state so dirac can reason about your current table structure.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>@param {Object} table definition - Required Properties:</li>
+              <ul class="docs-parameters">
+                <li>@property {String} name - Name of the table</li>
+                <li>@property {Object} schema - Schema of table (see <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-definition">MoSQL definition helper</a>)</li>
+              </ul>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.register</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">var dirac = require('/dirac');
+
+// Register table
+dirac.register({
+  name: 'users'
+, schema: {
+    id: {
+      type: 'serial'
+    , primaryKey: true
+    }
+  , name: { type: 'text' }
+  }
+});
+
+// Register View
+dirac.register({
+  name: 'bobs'
+, type: 'view'
+, query: {
+    type: 'select'
+  , table: 'users'
+  , where: { name: { $ilike: 'bob' } }
+  }
+});
+
+dirac.init(/* ... */);
+
+dirac.dals.users.findOne( 7, function( error, user ){ /* ... */ });
+</code>
+              </div>
+            </div>
+
             <h4 class="docs-method" id="docs-root-init">dirac.dropAllTables( callback )</h4>
             <p class="docs-method-description">Run the command for dropping all registered tables.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
               <li>@param {Function} callback( error, results )</li>
+            </ul>
+
+            <h4 class="docs-method" id="docs-root-init">dirac.sync( [options], [callback] )</h4>
+            <p class="docs-method-description">Get Database up-to-date with latest schemas</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>
+                @param {Object} options - Options for sync
+                <ul class="docs-parameters">
+                  <li>@property {Boolean} force - If `true` will perform destructive sync</li>
+                </ul>
+              </li>
+              <li>@param {Function} callback( error )</li>
+            </ul>
+
+            <h4 class="docs-method" id="docs-root-init">dirac.use( middleware )</h4>
+            <p class="docs-method-description">Pass a function to dirac to be called whenever `dirac.init` is called. Useful for initializing before/after filters and adding database-wide properties to all schemas.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>@param {Function} middleware( dirac ) - - the function that will be called when dirac is initialized. It's passed a single parameter (the dirac module).</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">db/middleware/created-at.js</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">/**
+ * Automatically adds created_at/updated_at fields to schemas
+ */
+var dirac = require('/dirac');
+
+var utils = require('utils');
+
+module.exports = function( options ){
+  utils.defaults( options, {
+    createdAt: {
+      name: 'created_at'
+    , type: 'timestamp'
+    , default: 'now()'
+    }
+  , updatedAt: {
+      name: 'updated_at'
+    , type: 'timestamp'
+    , default: 'now()'
+    }
+  });
+
+  return function( dirac ){
+    // Adds fields to a DAL
+    var addFields = function( dal ){
+      var schema = dirac.dals[ dal ].schema;
+
+      // Add createdAt if it's not already there
+      if ( !(options.createdAt.name in schema) ){
+        schema[ options.createdAt.name ] = options.createdAt;
+      }
+
+      // Add updatedAt if it's not already there
+      if ( !(options.updatedAt.name in schema) ){
+        schema[ options.updatedAt.name ] = options.updatedAt;
+      }
+    };
+
+    // Before filter adds updatedAt = 'now()' to the update query
+    var updateFilter = function( $query, schema, next ){
+      // Updates may be on values or updates
+      var values = 'values' in $query ? $query.values : $query.updates;
+
+      values[ options.updatedAt.name ] = 'now()';
+
+      next();
+    };
+
+    // Registers before filters to update updatedAt
+    var addFilters = function( dal ){
+      dirac.dals[ dal ].before( 'update', updateFilter );
+    };
+
+    // Add fields to each DAL
+    Object.keys( dirac.dals ).forEach( addFields )
+
+    // Add filters to each DAL
+    Object.keys( dirac.dals ).forEach( addFilters )
+  };
+};
+</code>
+              </div>
+            </div>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">db/index.js</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">/**
+ * Register our database middleware
+ */
+var dirac = require('/dirac');
+
+var middleware = {
+  createdAt: require('./middleware/created-at')
+};
+
+dirac.use(
+  middleware.createdAt({
+    updatedAt: {
+      name: 'last_updated'
+    , type: 'timestamp'
+    , default: 'now()'
+    }
+  })
+);
+
+// DAL registration
+// ...
+// ...
+
+// After init is called, all functions specified in use are called
+dirac.init( config.db );
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-root-saveCurrentDbState">dirac.saveCurrentDbState( version, [callback] )</h4>
+            <p class="docs-method-description">Save an entry in the dirac_schemas table of the current DAL state in memory. This happens everytime you call `sync`</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>
+                @param {Object} options - Options for sync
+                <ul class="docs-parameters">
+                  <li>@property {Boolean} force - If `true` will perform destructive sync</li>
+                </ul>
+              </li>
+              <li>@param {Function} callback( error )</li>
             </ul>
           </section>
         </div>
