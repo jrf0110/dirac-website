@@ -144,7 +144,7 @@ dirac.dals.users.findOne( 7, function( error, user ){
               </ul>
             </li>
             <li>
-              <a href="#docs-dal">DAL</a>
+              <a href="#docs-table">Table Documentation</a>
               <ul class="nav nav-vertical">
                 <li><a href="#">dirac.dals.table_name.find</a></li>
                 <li><a href="#">dirac.dals.table_name.findOne</a></li>
@@ -539,13 +539,87 @@ dirac.init( config.db );
               <li>@param {Function} callback( error )</li>
             </ul>
           </section>
+
+          <section class="docs-section" id="docs-table">
+            <h3 class="section-title">Table Documentation</h3>
+            
+            <h4 class="docs-method" id="docs-dal-find">dirac.dals.table_name.find( $query, [options], [callback] )</h4>
+            <p class="docs-method-description">Select documents in `table_name`. The `$query` object is the `where` property of a MoSQL object. The `options` object is mixed into the main query object sent to <a href="docs-dal-query">dirac.dals.table_name.query</a> and makes up the rest of the query.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>$query - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-where">MoSQL `where` object</a> sets `where` clause</li>
+              <li>options - Anything else that would go in a <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md">MoSQL query</a> ( limit, offset, groupBy, etc )</li>
+              <li>callback - function( error, results ){ }</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.dals.table_name.find</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">// Query where condition
+var $query = {
+  rating: { $gte: 3.5 }
+, high_score: { $lt: 5000 }
+, name: { $in: [ 'Bob', 'Alice', 'Joe', 'Momma' ] }
+};
+
+// Other options for the query
+var options = {
+  columns: [
+    '*' // users.*
+  , {   // Get average user high_score
+      type:       'average'           // Name of the function
+    , as:         'average_score'     // Name of the column
+    , expression: 'users.high_score'  // Function argument
+    }
+  ]
+, offset: 50
+, limit:  25
+, order: { column: 'id', direction: 'desc' }
+, group: [ 'id', 'name' ]
+};
+
+dirac.dals.users.find( $query, options, function( error, results ){
+  /* ... */
+});
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-dal-findOne">dirac.dals.table_name.findOne( $query, [options], [callback] )</h4>
+            <p class="docs-method-description">Identical to find only it adds a limit: 1 to the options and will return an object rather than an array. Substitute an ID for $query.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>$query   - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-where">MoSQL `where` object</a> or an ID to be converted to: { id: VALUE }</li>
+              <li>options  - Anything else that would go in a <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md">MoSQL query</a> ( limit, offset, groupBy, etc )</li>
+              <li>callback - function( error, results ){ }</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.dals.table_name.findOne</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">// Find user with { id: 1 }
+dirac.dals.users.find( 1, function( error, user ){
+  /* ... */
+});
+</code>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </section>
 
     <section class="page-section section-primary">
       <div class="container">
-        <h2 class="section-header">Another Section</h2>
+        <h2 class="section-header">Examples</h2>
       </div>
     </section>
 

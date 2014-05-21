@@ -6,8 +6,14 @@
 
 }
 
+.docs-section + .docs-section {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: solid 20px @off-gray;
+}
+
 .docs-section .section-title {
-  font-size: 1.4em;
+  font-size: 2.8em;
   font-weight: 300;
 }
 
@@ -16,4 +22,11 @@
   margin-left: 10px;
   padding-left: 10px;
   list-style: none;
+}
+
+.docs-section .docs-method {
+  text-transform: none;
+  font-family: @font-family-monospace;
+  font-size: 1.4em;
+  background: rgba(0, 0, 0, 0.04);
 }
