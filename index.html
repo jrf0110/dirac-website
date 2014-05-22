@@ -612,6 +612,30 @@ dirac.dals.users.find( 1, function( error, user ){
 </code>
               </div>
             </div>
+
+            <h4 class="docs-method" id="docs-dal-remove">dirac.dals.table_name.remove( $query, [options], [callback] )</h4>
+            <p class="docs-method-description">Removes a document from the database. Substitute an ID for $query.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>$query   - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-where">MoSQL `where` object</a> or an ID to be converted to: { id: VALUE }</li>
+              <li>options  - Anything else that would go in a <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md">MoSQL query</a> ( limit, offset, groupBy, etc )</li>
+              <li>callback - function( error, results ){ }</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.dals.table_name.remove</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">// Remove user with { id: 1 }
+dirac.dals.users.remove( 1, function( error, user ){
+  /* ... */
+});
+</code>
+              </div>
+            </div>
           </section>
         </div>
       </div>
