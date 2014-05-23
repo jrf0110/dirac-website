@@ -642,7 +642,7 @@ dirac.dals.users.remove( 1, function( error, user ){
             <h5>Arguments</h5>
             <ul class="docs-parameters">
               <li>$query   - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-where">MoSQL `where` object</a> or an ID to be converted to: { id: VALUE }</li>
-              <li>$update  - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-values">MoSQL `values` object</a> Object whose keys map to column names and values map to values</li>
+              <li>$update  - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-updates">MoSQL `updates` object</a> Object whose keys map to column names and values map to values</li>
               <li>options  - Anything else that would go in a <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md">MoSQL query</a> ( limit, offset, groupBy, etc )</li>
               <li>callback - function( error, results ){ }</li>
             </ul>
@@ -670,6 +670,40 @@ var options = {
 dirac.dals.users.update( $query, $update, options, function( error, users ){
   /* ... */
 });
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table_name.insert( document(s), [options], [callback] )</h4>
+            <p class="docs-method-description">Insert a single document or an array of documents.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>document - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-values">MoSQL `values` object</a> a single document or array of documents</li>
+              <li>options  - Anything else that would go in a <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md">MoSQL query</a> ( limit, offset, groupBy, etc )</li>
+              <li>callback - function( error, results ){ }</li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.dals.table_name.update</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">// Update all bobs to bills
+var user1 = {
+  name: 'bob'
+};
+
+db.users.insert( user1, function( error, result ){
+  console.log( result.id );  
+});
+
+db.users.insert([
+  { name: 'bob' }
+, { name: 'bill' }
+, { name: 'alice' }
+]);
 </code>
               </div>
             </div>
