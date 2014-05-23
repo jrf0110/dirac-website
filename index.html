@@ -146,13 +146,13 @@ dirac.dals.users.findOne( 7, function( error, user ){
             <li>
               <a href="#docs-table">Table Documentation</a>
               <ul class="nav nav-vertical">
-                <li><a href="#">dirac.dals.table_name.find</a></li>
-                <li><a href="#">dirac.dals.table_name.findOne</a></li>
-                <li><a href="#">dirac.dals.table_name.remove</a></li>
-                <li><a href="#">dirac.dals.table_name.update</a></li>
-                <li><a href="#">dirac.dals.table_name.insert</a></li>
-                <li><a href="#">dirac.dals.table_name.before</a></li>
-                <li><a href="#">dirac.dals.table_name.after</a></li>
+                <li><a href="#">dirac.dals.table.find</a></li>
+                <li><a href="#">dirac.dals.table.findOne</a></li>
+                <li><a href="#">dirac.dals.table.remove</a></li>
+                <li><a href="#">dirac.dals.table.update</a></li>
+                <li><a href="#">dirac.dals.table.insert</a></li>
+                <li><a href="#">dirac.dals.table.before</a></li>
+                <li><a href="#">dirac.dals.table.after</a></li>
               </ul>
             </li>
             <li>
@@ -344,7 +344,7 @@ dirac.raw( sql, values, function( error, users ){
             </div>
 
             <h4 class="docs-method" id="docs-root-init">dirac.register( callback )</h4>
-            <p class="docs-method-description">Registers a new table or view with dirac. Will not actually create the table until dirac.sync() is called. Alternatively, you could call: dirac.dals.table_name.createIfNotExists() to manually add it. However, sync will resolve table dependencies and it will also save the database state so dirac can reason about your current table structure.</p>
+            <p class="docs-method-description">Registers a new table or view with dirac. Will not actually create the table until dirac.sync() is called. Alternatively, you could call: dirac.dals.table.createIfNotExists() to manually add it. However, sync will resolve table dependencies and it will also save the database state so dirac can reason about your current table structure.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
               <li>@param {Object} table definition - Required Properties:</li>
@@ -543,8 +543,8 @@ dirac.init( config.db );
           <section class="docs-section" id="docs-table">
             <h3 class="section-title">Table Documentation</h3>
             
-            <h4 class="docs-method" id="docs-dal-find">dirac.dals.table_name.find( $query, [options], [callback] )</h4>
-            <p class="docs-method-description">Select documents in `table_name`. The `$query` object is the `where` property of a MoSQL object. The `options` object is mixed into the main query object sent to <a href="docs-dal-query">dirac.dals.table_name.query</a> and makes up the rest of the query.</p>
+            <h4 class="docs-method" id="docs-dal-find">dirac.dals.table.find( $query, [options], [callback] )</h4>
+            <p class="docs-method-description">Select documents in `table_name`. The `$query` object is the `where` property of a MoSQL object. The `options` object is mixed into the main query object sent to <a href="docs-dal-query">dirac.dals.table.query</a> and makes up the rest of the query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
               <li>$query - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-where">MoSQL `where` object</a> sets `where` clause</li>
@@ -556,7 +556,7 @@ dirac.init( config.db );
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
-                <h5 class="window-name">dirac.dals.table_name.find</h5>
+                <h5 class="window-name">dirac.dals.table.find</h5>
               </div>
               <div class="window-content">
 <code class="language-javascript">// Query where condition
@@ -589,7 +589,7 @@ dirac.dals.users.find( $query, options, function( error, results ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-findOne">dirac.dals.table_name.findOne( $query, [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-dal-findOne">dirac.dals.table.findOne( $query, [options], [callback] )</h4>
             <p class="docs-method-description">Identical to find only it adds a limit: 1 to the options and will return an object rather than an array. Substitute an ID for $query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -602,7 +602,7 @@ dirac.dals.users.find( $query, options, function( error, results ){
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
-                <h5 class="window-name">dirac.dals.table_name.findOne</h5>
+                <h5 class="window-name">dirac.dals.table.findOne</h5>
               </div>
               <div class="window-content">
 <code class="language-javascript">// Find user with { id: 1 }
@@ -613,7 +613,7 @@ dirac.dals.users.find( 1, function( error, user ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-remove">dirac.dals.table_name.remove( $query, [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-dal-remove">dirac.dals.table.remove( $query, [options], [callback] )</h4>
             <p class="docs-method-description">Removes a document from the database. Substitute an ID for $query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -626,7 +626,7 @@ dirac.dals.users.find( 1, function( error, user ){
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
-                <h5 class="window-name">dirac.dals.table_name.remove</h5>
+                <h5 class="window-name">dirac.dals.table.remove</h5>
               </div>
               <div class="window-content">
 <code class="language-javascript">// Remove user with { id: 1 }
@@ -637,7 +637,7 @@ dirac.dals.users.remove( 1, function( error, user ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table_name.update( $query, $update, [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table.update( $query, $update, [options], [callback] )</h4>
             <p class="docs-method-description">Update documents in the database. Substitute an ID for $query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -651,7 +651,7 @@ dirac.dals.users.remove( 1, function( error, user ){
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
-                <h5 class="window-name">dirac.dals.table_name.update</h5>
+                <h5 class="window-name">dirac.dals.table.update</h5>
               </div>
               <div class="window-content">
 <code class="language-javascript">// Update all bobs to bills
@@ -674,7 +674,7 @@ dirac.dals.users.update( $query, $update, options, function( error, users ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table_name.insert( document(s), [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table.insert( document(s), [options], [callback] )</h4>
             <p class="docs-method-description">Insert a single document or an array of documents.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -687,7 +687,7 @@ dirac.dals.users.update( $query, $update, options, function( error, users ){
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
-                <h5 class="window-name">dirac.dals.table_name.update</h5>
+                <h5 class="window-name">dirac.dals.table.update</h5>
               </div>
               <div class="window-content">
 <code class="language-javascript">// Update all bobs to bills
