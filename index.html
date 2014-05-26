@@ -98,26 +98,26 @@ dirac.dals.users.findOne( 7, function( error, user ){
     <section class="page-section section-darker" id="marketing-points-section">
       <div class="container">
         <div class="marketing-points">
-          <a href="#" class="point">
+          <div href="#" class="point">
             <i class="point-icon fa fa-refresh"></i>
             <h3 class="point-title">Destructive or non-destructive database syncing</h3>
-          </a>
-          <a href="#" class="point">
+          </div>
+          <div href="#" class="point">
             <i class="point-icon fa fa-table"></i>
             <h3 class="point-title">JSON table and view definitions</h3>
-          </a>
-          <a href="#" class="point">
+          </div>
+          <div href="#" class="point">
             <i class="point-icon fa fa-anchor"></i>
             <h3 class="point-title">Standard CRUD</h3>
-          </a>
-          <a href="#" class="point">
+          </div>
+          <div href="#" class="point">
             <i class="point-icon fa fa-code"></i>
             <h3 class="point-title">Robust JSON queries</h3>
-          </a>
-          <a href="#" class="point">
+          </div>
+          <div href="#" class="point">
             <i class="point-icon fa fa-plus"></i>
             <h3 class="point-title">Pluginable Architecture</h3>
-          </a>
+          </div>
         </div>
       </div>
     </section>
@@ -155,7 +155,7 @@ dirac.dals.users.findOne( 7, function( error, user ){
                 <li><a href="#docs-table-after">dirac.dals.table.after</a></li>
               </ul>
             </li>
-            <li>
+            <!-- <li>
               <a href="#docs-database-syncing">Database Syncing</a>
               <ul class="nav nav-vertical">
                 <li><a href="#">Alter Table Strategies</a></li>
@@ -163,7 +163,7 @@ dirac.dals.users.findOne( 7, function( error, user ){
                 <li><a href="#">dirac.strategies.get</a></li>
                 <li><a href="#">dirac.strategies.register</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </div>
 
@@ -191,31 +191,23 @@ dirac.dals.users.findOne( 7, function( error, user ){
                 <h5 class="window-name">db/index.js</h5>
               </div>
               <div class="window-content">
-<code class="language-javascript">var fs      = require('fs');
-var path    = require('path');
-var dirac   = require('dirac');
+<code class="language-javascript">var dirac   = require('dirac');
+var utils   = require('../lib/utils');
 var config  = require('../config');
 
-// Specify the `tables` directory
-var dir = path.join( __dirname, 'tables' );
-
-// Register each table file with dirac
-fs.readdirSync( dir ).filter( function( file ){
-  return fs.statSync( path.join( dir, file ) ).isFile();
-}).map( function( t ){
-  return require( path.join( dir, t ) );
-}).forEach( dirac.register );
+// Tell dirac to use all of the schemas in `/tables`
+dirac.use( dirac.dir( __dirname + '/tables' ) );
 
 // Set the DB Config
 dirac.init( config.db );
 
 // Export the dals namespace for easy access
-module.exports = dirac.dals;
+module.exports = utils.extend( {}, dirac.dals );
 </code>
               </div>
             </div>
 
-            <p>The `dirac.dals` namespace is where each table interface is. So in the example above, groups, users, and users_groups would be available under `dirac.dals`.</p>
+            <p>The `dirac.dals` namespace is where each table interface is accessed. In the example above, groups, users, and users_groups would be available under `dirac.dals`.</p>
 
             <h4>Using the Database Module</h4>
             <div class="window-pane">
