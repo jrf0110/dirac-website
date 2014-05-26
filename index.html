@@ -132,27 +132,27 @@ dirac.dals.users.findOne( 7, function( error, user ){
             <li>
               <a href="#docs-root-api">Root API</a>
               <ul class="nav nav-vertical">
-                <li><a href="#">dirac.init</a></li>
-                <li><a href="#">dirac.query</a></li>
-                <li><a href="#">dirac.raw</a></li>
-                <li><a href="#">dirac.register</a></li>
-                <li><a href="#">dirac.dropAllTables</a></li>
-                <li><a href="#">dirac.sync</a></li>
-                <li><a href="#">dirac.use</a></li>
-                <li><a href="#">dirac.createTable</a></li>
-                <li><a href="#">dirac.saveCurrentDbState</a></li>
+                <li><a href="#docs-root-init">dirac.init</a></li>
+                <li><a href="#docs-root-query">dirac.query</a></li>
+                <li><a href="#docs-root-raw">dirac.raw</a></li>
+                <li><a href="#docs-root-register">dirac.register</a></li>
+                <li><a href="#docs-root-dropAllTables">dirac.dropAllTables</a></li>
+                <li><a href="#docs-root-sync">dirac.sync</a></li>
+                <li><a href="#docs-root-use">dirac.use</a></li>
+                <li><a href="#docs-root-createTable">dirac.createTable</a></li>
+                <li><a href="#docs-root-saveCurrentDbState">dirac.saveCurrentDbState</a></li>
               </ul>
             </li>
             <li>
               <a href="#docs-table">Table Documentation</a>
               <ul class="nav nav-vertical">
-                <li><a href="#">dirac.dals.table.find</a></li>
-                <li><a href="#">dirac.dals.table.findOne</a></li>
-                <li><a href="#">dirac.dals.table.remove</a></li>
-                <li><a href="#">dirac.dals.table.update</a></li>
-                <li><a href="#">dirac.dals.table.insert</a></li>
-                <li><a href="#">dirac.dals.table.before</a></li>
-                <li><a href="#">dirac.dals.table.after</a></li>
+                <li><a href="#docs-table-find">dirac.dals.table.find</a></li>
+                <li><a href="#docs-table-find">dirac.dals.table.findOne</a></li>
+                <li><a href="#docs-table-remove">dirac.dals.table.remove</a></li>
+                <li><a href="#docs-table-update">dirac.dals.table.update</a></li>
+                <li><a href="#docs-table-insert">dirac.dals.table.insert</a></li>
+                <li><a href="#docs-table-before">dirac.dals.table.before</a></li>
+                <li><a href="#docs-table-after">dirac.dals.table.after</a></li>
               </ul>
             </li>
             <li>
@@ -543,8 +543,8 @@ dirac.init( config.db );
           <section class="docs-section" id="docs-table">
             <h3 class="section-title">Table Documentation</h3>
             
-            <h4 class="docs-method" id="docs-dal-find">dirac.dals.table.find( $query, [options], [callback] )</h4>
-            <p class="docs-method-description">Select documents in `table_name`. The `$query` object is the `where` property of a MoSQL object. The `options` object is mixed into the main query object sent to <a href="docs-dal-query">dirac.dals.table.query</a> and makes up the rest of the query.</p>
+            <h4 class="docs-method" id="docs-table-find">dirac.dals.table.find( $query, [options], [callback] )</h4>
+            <p class="docs-method-description">Select documents in `table_name`. The `$query` object is the `where` property of a MoSQL object. The `options` object is mixed into the main query object sent to <a href="docs-table-query">dirac.dals.table.query</a> and makes up the rest of the query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
               <li>$query - <a href="https://github.com/goodybag/mongo-sql/blob/master/docs/query-helpers.md#helper-where">MoSQL `where` object</a> sets `where` clause</li>
@@ -589,7 +589,7 @@ dirac.dals.users.find( $query, options, function( error, results ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-findOne">dirac.dals.table.findOne( $query, [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-table-findOne">dirac.dals.table.findOne( $query, [options], [callback] )</h4>
             <p class="docs-method-description">Identical to find only it adds a limit: 1 to the options and will return an object rather than an array. Substitute an ID for $query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -613,7 +613,7 @@ dirac.dals.users.find( 1, function( error, user ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-remove">dirac.dals.table.remove( $query, [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-table-remove">dirac.dals.table.remove( $query, [options], [callback] )</h4>
             <p class="docs-method-description">Removes a document from the database. Substitute an ID for $query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -637,7 +637,7 @@ dirac.dals.users.remove( 1, function( error, user ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table.update( $query, $update, [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-table-update">dirac.dals.table.update( $query, $update, [options], [callback] )</h4>
             <p class="docs-method-description">Update documents in the database. Substitute an ID for $query.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -674,7 +674,7 @@ dirac.dals.users.update( $query, $update, options, function( error, users ){
               </div>
             </div>
 
-            <h4 class="docs-method" id="docs-dal-update">dirac.dals.table.insert( document(s), [options], [callback] )</h4>
+            <h4 class="docs-method" id="docs-table-update">dirac.dals.table.insert( document(s), [options], [callback] )</h4>
             <p class="docs-method-description">Insert a single document or an array of documents.</p>
             <h5>Arguments</h5>
             <ul class="docs-parameters">
@@ -687,7 +687,7 @@ dirac.dals.users.update( $query, $update, options, function( error, users ){
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
                 <i class="window-btn"></i>
-                <h5 class="window-name">dirac.dals.table.update</h5>
+                <h5 class="window-name">dirac.dals.table.insert</h5>
               </div>
               <div class="window-content">
 <code class="language-javascript">// Update all bobs to bills
@@ -705,6 +705,121 @@ db.users.insert([
 , { name: 'bill', other_field: true }
 , { name: 'alice' }
 ]);
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-table-before">dirac.dals.table.before( [method], handler )</h4>
+            <p class="docs-method-description">Add a before filter to the DAL. Before filters are like middleware layers that get run before the query is executed. You can add as long as a chain as you'd like.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>method  - Name of the DAL method</li>
+              <li>handler - ( $query, schema, callback ) Middleware function handler
+                <ul class="docs-parameters">
+                  <li>$query  - The <a href="https://github.com/goodybag/mongo-sql/blob/master/docs">Full MoSQL query object</a></li>
+                  <li>schema  - The schema for the current table</li>
+                  <li>next    - A function to tell dirac to go the next function in the chain (If you pass an argument to next, dirac assumes that it is an error and will send the value back to the consumers callbaack)</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.dals.table.before - Crappy validation</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">// Register a new table
+dirac.register({
+  name: 'books'
+, schema: {
+    id: { type: 'serial', primaryKey: true }
+  , name: {
+      type: 'text'
+
+      // Dirac doesn't know anything about this object
+      // So we can use it for our own benefit
+    , validation: {
+        type: 'string'
+      , max_length: 250
+      }
+    }
+  }
+})
+
+// Before inserting books, validate the doc
+dirac.dals.books.before( 'insert', function( $query, schema, next ){
+  if ( typeof $query.values.name != schema.name.validation.type )
+    return next({ type: 'VALIDATION_ERROR', message: 'invalid type for `name`' });
+
+  if ( $query.values.name.length > schema.validation.max_length )
+    return next({ type: 'VALIDATION_ERROR', message: 'invalid length for `name`' });
+
+  /* ... */
+});
+</code>
+              </div>
+            </div>
+
+            <h4 class="docs-method" id="docs-table-after">dirac.dals.table.after( [method], handler )</h4>
+            <p class="docs-method-description">Add an after filter to the DAL. After filters are like middleware layers that get run after the query is executed.</p>
+            <h5>Arguments</h5>
+            <ul class="docs-parameters">
+              <li>method  - Name of the DAL method</li>
+              <li>handler - ( $query, schema, callback ) Middleware function handler
+                <ul class="docs-parameters">
+                  <li>results - Results from the query</li>
+                  <li>$query  - The <a href="https://github.com/goodybag/mongo-sql/blob/master/docs">Full MoSQL query object</a></li>
+                  <li>schema  - The schema for the current table</li>
+                  <li>next    - A function to tell dirac to go the next function in the chain (If you pass an argument to next, dirac assumes that it is an error and will send the value back to the consumers callbaack)</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="window-pane">
+              <div class="window-header">
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <i class="window-btn"></i>
+                <h5 class="window-name">dirac.dals.table.after - Dumb Casting</h5>
+              </div>
+              <div class="window-content">
+<code class="language-javascript">// Register a new table
+dirac.register({
+  name: 'books'
+, schema: {
+    id: { type: 'serial', primaryKey: true }
+  , num_words: {
+      type: 'text'
+
+      // node-pg returns bigints as strings
+      // Tell casting after filter to cast to a number
+    , cast: 'number'
+    }
+  }
+})
+
+// Crappy casting
+dirac.dals.books.after( 'find', function( results, $query, schema, next ){
+  var casts = {};
+  for ( var key in schema ){
+    if ( 'cast' in schema ) casts[ key ] = schema[ key ][ cast ];
+  }
+
+  // Transform result set
+  for ( var i = 0, l = results.length; i < l; ++i ){
+    for ( var key in casts ){
+      switch ( casts[ key ] ){
+        case 'int':     results[ i ][ key ] = parseInt( results[ i ][ key ] ); break;
+        case 'number':  results[ i ][ key ] = parseFloat( results[ i ][ key ] ); break;
+        case 'string':  results[ i ][ key ] = "" + results[ i ][ key ]; break;
+        default: break;
+      }
+    }
+  }
+
+  next();
+});
 </code>
               </div>
             </div>
